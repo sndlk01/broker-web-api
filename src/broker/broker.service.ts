@@ -1,6 +1,11 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateBrokerDto } from './dto/create-broker.dto';
+import { UpdateBrokerDto } from './dto/update-broker.dto';
 import { brokerType } from '../../generated/prisma/client';
 
 @Injectable()
@@ -30,5 +35,20 @@ export class BrokerService {
 
   async findOne(slug: string) {
     return this.prisma.broker.findUnique({ where: { slug } });
+  }
+
+  async update(id: number, dto: UpdateBrokerDto) {
+    const existing = await this.prisma.broker.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException('Broker not found');
+
+    return this.prisma.broker.update({ where: { id }, data: dto });
+  }
+
+  async remove(id: number) {
+    const existing = await this.prisma.broker.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException('Broker not found');
+
+    await this.prisma.broker.delete({ where: { id } });
+    return { message: 'Deleted successfully' };
   }
 }

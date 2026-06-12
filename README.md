@@ -84,10 +84,28 @@ docker exec -i broker-db psql -U postgres broker < backup.sql
 | POST | `/api/web/auth/login` | — | Login |
 | GET | `/api/web/brokers` | — | List brokers |
 | GET | `/api/web/brokers?search=&type=` | — | Search brokers |
-| GET | `/api/web/brokers/:slug` | — | Get broker |
+| GET | `/api/web/brokers/:slug` | — | Get broker by slug |
 | POST | `/api/web/brokers` | Bearer | Create broker |
+| PUT | `/api/web/brokers/:id` | Bearer | Update broker |
+| DELETE | `/api/web/brokers/:id` | Bearer | Delete broker |
 
 `broker_type` รับค่า: `cfd`, `bond`, `stock`, `crypto`
+
+---
+
+## Postman
+
+Import ไฟล์ `Broker Web API.postman_collection.json` เข้า Postman
+
+**วิธี import:**
+1. เปิด Postman → กด **Import**
+2. ลากไฟล์ `Broker Web API.postman_collection.json` เข้ามา หรือ Browse เลือกไฟล์
+3. กด **Import**
+
+**Features:**
+- ตั้งค่า `baseUrl` ไว้ที่ `http://localhost:3030/api/web` แก้ได้ใน Collection Variables
+- Login สำเร็จแล้ว `{{token}}` จะถูก set อัตโนมัติ — ไม่ต้อง copy token เอง
+- Request ที่ต้องการ Auth ใช้ `{{token}}` ใน Authorization header อัตโนมัติ
 
 ---
 
